@@ -165,6 +165,12 @@ print(xtable(addmargins(gas_joint, FUN=list(Marginal=sum), quiet=TRUE), digits=3
 \pause $$E(X^2) = 1^2\cdot0.345 + 1.5^2\cdot0.320 + 1.75^2\cdot0.335 = `r sum(c(1, 1.5, 1.75)^2*c(0.345, 0.320, 0.335))`$$
 \pause $$\V{X} = `r sum(c(1, 1.5, 1.75)^2*c(0.345, 0.320, 0.335)) - (sum(c(1, 1.5, 1.75)*c(0.345, 0.320, 0.335)))^2`$$
 
+## variance non-example
+
+Reconsider $X$ with density $f(x) = 2x^{-3}$ for $x > 1$, and 0 otherwise. Last time we found $E(X)=2$.
+
+But $X$ does not have a variance, because $E(X^2)$ does not exist.
+
 ## notation; standard deviation
 
 It is common to use $\sigma^2$ as a shorter stand-in for $\V{X}$.
@@ -180,3 +186,8 @@ $$\text{SD}(X) = \sqrt{\V{X}}$$
 
 \pause I will leave to you to guess as to whether or not I am convinced this is a good idea.
 
+## variance rules
+
+$$\V{a + bX} = b^2\V{X}$$
+
+\pause What about $\V{X + Y}$?
