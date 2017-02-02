@@ -1,0 +1,182 @@
+---
+title: "STA286 Lecture 11"
+author: "Neil Montgomery"
+date: "Last edited: `r format(Sys.time(), '%Y-%m-%d %H:%M')`"
+output: 
+  beamer_presentation:
+    keep_tex: TRUE
+    incremental: TRUE
+    df_print: tibble
+    fig_caption: FALSE
+classoption: aspectratio=169
+header-includes:
+- \renewcommand{\le}{\leqslant}
+- \renewcommand{\ge}{\geqslant}
+- \renewcommand\P[1]{P{\left(#1\right)}}
+- \newcommand\F[1]{F_{\tiny{#1}}}
+- \newcommand\f[1]{f_{\tiny{#1}}}
+- \newcommand\p[1]{p_{\tiny{#1}}}
+- \newcommand\V[1]{\text{Var}\!\left(#1\right)}
+- \newcommand\E[1]{E\!\left(#1\right)}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning=FALSE, message=FALSE)
+options(tibble.width=70)
+```
+
+## reminder "theorem"
+
+$$E(g(X)) = \begin{cases}
+\sum\limits_x g(x)p(x) &: \text{discrete}\\
+\\
+\int\limits_{-\infty}^\infty g(x)f(x)\,dx &: \text{continuous}
+\end{cases}$$
+
+##  "constant" random variables
+
+From last time: $E(a + bX) = a + bE(X)$. The left had side is a bit of an odd expression. 
+
+\pause For convenience we can treat constants as random variables. Formally, we can consider a random variable $X$ that is always, say, some real $a$ no matter what. The pmf of $X$ is:
+$$P(X=a) = 1$$
+and 0 otherwise.
+
+\pause Informally, for convenience, we dispense with the $X$ notation and just treat the constant $a$ as a random variable, allowing for statements like:
+$$E(a) = a$$
+
+## expected values and joint distributions
+
+Given $X$ and $Y$ with joint density $f(x,y)$, and given a function $g:\mathbb{R}^2\to\mathbb{R}$, a sophisticated application of the theorem from last time is:
+
+$$E(g(X,Y)) = \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty} g(x,y)f(x,y)\,dx\,dy$$
+
+(discrete version is the same, with sums)
+
+## first key example
+
+Consider $g(x,y) = x + y$. 
+
+\begin{align*}
+E(g(X,Y)) = E(X + Y) &= \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty}
+(x + y) f(x,y)\,dx\,dy\\
+\onslide<2->{&= \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty} x f(x,y)\,dy\,dx + \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty} y f(x,y)\,dx\,dy\\}
+\onslide<3->{&= \int\limits_{-\infty}^{\infty} x \int\limits_{-\infty}^{\infty}  f(x,y)\,dy\,dx + \int\limits_{-\infty}^{\infty} y \int\limits_{-\infty}^{\infty}  f(x,y)\,dx\,dy\\}
+\onslide<4->{&= \int\limits_{-\infty}^{\infty} x \f{X}(x)\,dx + \int\limits_{-\infty}^{\infty} y \f{Y}(y)\,dy\\}
+\onslide<5->{&= E(X) + E(Y)}
+\end{align*}
+
+## second key example
+
+Suppose $X$ and $Y$ are independent. Consider $g(x,y)=xy$.
+
+\begin{align*}
+E(g(X,Y)) = E(XY) &= \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty}
+xy\, f(x,y)\,dx\,dy\\
+\onslide<2->{&= \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty} xy\, \f{X}(x)\f{Y}(y)\,dx\,dy\\}
+\onslide<3->{&= \int\limits_{-\infty}^{\infty} x \f{X}(x)\,dx\, \int\limits_{-\infty}^{\infty} y \f{Y}(y)\,dy\\}
+\onslide<4->{&= E(X)E(Y)}
+\end{align*}
+
+## notation
+
+It is common to use $\mu$ as a shorter stand-in for $E(X)$.
+
+I'm not so convinced this is a good idea.
+
+# measuring variation
+
+## BIG MONEY versus BIG MONEY SCHNAPPS VERSION
+
+$E(X) = E(Y) = 0$
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{rcccc}
+ \hline
+ Roll & 1, 2 & 3 & 4, 5 & 6 \\\hline
+BIG MONEY Outcome $X$ \$ & -2 & 0 & 1 & 2 \\\hline
+BIG MONEY SCHNAPPS Outcome $Y$ \$ & -200 & 0 & 100 & 200 \\\hline
+Probability & 2/6 & 1/6 & 2/6 & 1/6\\\hline
+\end{tabular}
+\end{table}
+
+\pause But $Y$ is clearly a riskier game. The distribution is more spread out, by a factor of 100.
+
+\pause The question is---how to measure this difference in variation?
+
+## variance
+
+Recall the sample variance, expressed a little differently:
+$$s^2 = \sum\limits_{i=1}^n (x_i - \overline x)^2\frac{1}{n-1}$$
+This is a weighted sum of squared deviations with weights $w_i = 1/(n-1)$
+
+\pause The theoretical analogue is called the *variance*:
+$$\text{Var}(X) = E\left(\left(X - E(X)\right)^2\right) = E\left(\left(X - \mu\right)^2\right)$$
+provided the expectations all exist.
+
+\pause It is also possible to view this as an application of the $E(g(X))$ theorem with $g(x) = (x-\mu)^2$. 
+
+## examples - BIG MONEY
+
+$$\text{Var}(X) = (-2 - 0)^2\frac{2}{6} + (0 - 0)^2\frac{1}{6} + (1-0)^2\frac{2}{6} + (2-0)^2\frac{1}{6} = \frac{14}{6}$$
+
+\pause Schnapps version:
+$$\text{Var}(Y) = (-200 - 0)^2\frac{2}{6} + (0 - 0)^2\frac{1}{6} + (100-0)^2\frac{2}{6} + (200-0)^2\frac{1}{6} = \frac{140000}{6}$$
+
+## how to actually calculate variance
+
+Using the two rules $E(a + bX) = a + bE(X)$ and $E(X+Y)=E(X)+ E(Y)$ we can derive the better way to calculate variance:
+
+\begin{align*}
+\V{X} &= \E{(X-\mu)^2}\\
+\onslide<1->{&= \E{X^2 - 2X\mu + \mu^2}}\\
+\onslide<2->{&= \E{X^2} - 2E(X)\mu + \mu^2}\\
+\onslide<3->{&= \E{X^2} - \mu^2}\end{align*}
+
+\pause\pause\pause Or as I prefer: $\V{X} = \E{X^2} - \E{X}^2$
+
+## another variance example
+
+Gas pipes revisited:
+
+```{r, results='asis'}
+library(tidyverse)
+library(xtable)
+theme_update(axis.title = element_text(size=rel(1.5)), 
+             axis.text = element_text(size=rel(1.5)))
+
+diams <- c("1", "1.5", "1.75")
+psi <- c("0.5", "1", "2")
+Counts <- c(75, 100, 150, 110, 80, 90, 160, 140, 95)
+gas <- data.frame(expand.grid(Diameter=diams, Pressure=psi), Counts=Counts,
+                  check.names = FALSE)
+gas_joint <- prop.table(xtabs(Counts ~ Pressure + Diameter, gas))
+
+addtorow_m <- list()
+addtorow_m$pos <- list(0, 0)
+addtorow_m$command <- c("& \\multicolumn{3}{c|}{$X$} & \\\\\n",
+"$Y$ & 1 & 1.5 & 1.75 & Marginal\\\\\n")
+print(xtable(addmargins(gas_joint, FUN=list(Marginal=sum), quiet=TRUE), digits=3,
+             align="r|rrr|r"), add.to.row=addtorow_m, comment=FALSE,
+      include.colnames = FALSE, hline.after = c(0,3))
+```
+
+\pause $$E(X) = 1\cdot0.345 + 1.5\cdot0.320 + 1.75\cdot0.335 = `r sum(c(1, 1.5, 1.75)*c(0.345, 0.320, 0.335))`$$
+\pause $$E(X^2) = 1^2\cdot0.345 + 1.5^2\cdot0.320 + 1.75^2\cdot0.335 = `r sum(c(1, 1.5, 1.75)^2*c(0.345, 0.320, 0.335))`$$
+\pause $$\V{X} = `r sum(c(1, 1.5, 1.75)^2*c(0.345, 0.320, 0.335)) - (sum(c(1, 1.5, 1.75)*c(0.345, 0.320, 0.335)))^2`$$
+
+## notation; standard deviation
+
+It is common to use $\sigma^2$ as a shorter stand-in for $\V{X}$.
+
+\pause I'm not so convinced this is a good idea.
+
+\pause Recall the "unit" problem with the sample variance $s^2$; hence the use of the sample standard deviation $s = \sqrt{s^2}$.
+
+\pause The theoretical analogue is the *standard deviation*, defined as:
+$$\text{SD}(X) = \sqrt{\V{X}}$$
+
+\pause It is common to use $\sigma$ as a shorter stand-in for $\text{SD}(X)$.
+
+\pause I will leave to you to guess as to whether or not I am convinced this is a good idea.
+
