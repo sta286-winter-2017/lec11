@@ -59,8 +59,8 @@ Consider $g(x,y) = x + y$.
 \begin{align*}
 E(g(X,Y)) = E(X + Y) &= \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty}
 (x + y) f(x,y)\,dx\,dy\\
-\onslide<2->{&= \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty} x f(x,y)\,dy\,dx + \int\limits_{-\infty}^{\infty}\int\limits_{-\infty}^{\infty} y f(x,y)\,dx\,dy\\}
-\onslide<3->{&= \int\limits_{-\infty}^{\infty} x \int\limits_{-\infty}^{\infty}  f(x,y)\,dy\,dx + \int\limits_{-\infty}^{\infty} y \int\limits_{-\infty}^{\infty}  f(x,y)\,dx\,dy\\}
+\onslide<2->{&= \int\limits_{-\infty}^{\infty}\left[\int\limits_{-\infty}^{\infty} x f(x,y)\,dy\right]dx + \int\limits_{-\infty}^{\infty}\left[\int\limits_{-\infty}^{\infty} y f(x,y)\,dx\right]dy\\}
+\onslide<3->{&= \int\limits_{-\infty}^{\infty} x \left[\int\limits_{-\infty}^{\infty}  f(x,y)\,dy\right]dx + \int\limits_{-\infty}^{\infty} y \left[\int\limits_{-\infty}^{\infty}  f(x,y)\,dx\right]dy\\}
 \onslide<4->{&= \int\limits_{-\infty}^{\infty} x \f{X}(x)\,dx + \int\limits_{-\infty}^{\infty} y \f{Y}(y)\,dy\\}
 \onslide<5->{&= E(X) + E(Y)}
 \end{align*}
